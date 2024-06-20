@@ -9,19 +9,16 @@ import { useConfigStore } from "@/stores/config";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    redirect: "/dashboard",
+    redirect: "/order",
     component: () => import("@/layouts/main-layout/MainLayout.vue"),
-    meta: {
-      middleware: "auth",
-    },
     children: [
       {
-        path: "/dashboard",
-        name: "dashboard",
+        path: "/order",
+        name: "order",
         component: () => import("@/views/Dashboard.vue"),
         meta: {
-          pageTitle: "Dashboard",
-          breadcrumbs: ["Dashboards"],
+          pageTitle: "Order",
+          breadcrumbs: ["Order"],
         },
       },
       {

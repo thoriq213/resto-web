@@ -1,13 +1,9 @@
 <template>
-  <div id="kt_app_content" class="app-content flex-column-fluid">
+  <div id="kt_app_content" class="flex-column-fluid">
     <!--begin::Content container-->
     <div
       id="kt_app_content_container"
-      class="app-container"
-      :class="{
-        'container-fluid': contentWidthFluid,
-        'container-xxl': !contentWidthFluid,
-      }"
+      class=""
     >
       <RouterView></RouterView>
     </div>

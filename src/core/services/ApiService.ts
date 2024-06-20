@@ -3,7 +3,9 @@ import type { AxiosResponse } from "axios";
 import axios from "axios";
 import VueAxios from "vue-axios";
 import JwtService from "@/core/services/JwtService";
+import Cookies from 'js-cookie';
 
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 /**
  * @description service to call HTTP request via Axios
  */
@@ -21,6 +23,7 @@ class ApiService {
     ApiService.vueInstance.use(VueAxios, axios);
     ApiService.vueInstance.axios.defaults.baseURL =
       import.meta.env.VITE_APP_API_URL;
+      ApiService.vueInstance.axios.defaults.headers.common["Authorization"] = Cookies.get('token');
   }
 
   /**
