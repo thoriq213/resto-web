@@ -65,7 +65,14 @@ export default defineComponent({
           const minutes = 15;
           const expires = minutes / 1440;
           
-          await Cookies.set('token', data.token, { expires: expires });
+          const myPromise = new Promise((resolve, reject) => {
+            try {
+              Cookies.set('token', data.token, { expires: expires });
+              resolve('Operation was successful!');
+            } catch (error) {
+              reject('Operation failed!'); 
+            }
+          });
           router.push({name: 'menu'});
         } catch (error : any) {
           const res = error.response.data;
@@ -115,13 +122,13 @@ export default defineComponent({
   <div class="d-flex justify-content-center py-20 mb-20">
     <img class="" :src="logo" alt="" height="150" />
   </div>
-  <div class="px-3 bg-warning py-10">
+  <div class="px-3 bg-dark py-10">
     <center class="mb-10">
-      <h3>SILAHKAN ISI MEJA DAN DATA DIRI</h3>
+      <h3 class="text-light">SILAHKAN ISI MEJA DAN DATA DIRI</h3>
     </center>
     <form action="">
       <div class="form-group mb-5">
-        <label class="fs-4 fw-bold form-label" for="">Meja</label>
+        <label class="fs-4 fw-bold form-label text-light" for="">Meja</label>
         <input
           v-numeric-only
           class="form-control"
@@ -134,7 +141,7 @@ export default defineComponent({
         <span class="text-danger">{{ tableErrorApi ? tableErrorApi : tableError }}</span>
       </div>
       <div class="form-group mb-5">
-        <label class="fs-4 fw-bold form-label" for="">Nama</label>
+        <label class="fs-4 fw-bold form-label text-light" for="">Nama</label>
         <input
           class="form-control"
           type="text"
@@ -145,7 +152,7 @@ export default defineComponent({
         <span class="text-danger">{{ nameErrorApi ? nameErrorApi : nameError }}</span>
       </div>
       <div class="form-group mb-5">
-        <label class="fs-4 fw-bold form-label" for="">Nomor Handphone</label>
+        <label class="fs-4 fw-bold form-label text-light" for="">Nomor Handphone</label>
         <input
           class="form-control"
           type="text"
@@ -163,7 +170,7 @@ export default defineComponent({
   <div class="d-flex align-items-end mt-20 px-5">
     <p class="fs-5">
       Tidak Dapat Memesan? Silahkan Hubungi
-      <span class="fw-bold text-warning">Pelayan</span> Untuk Memesan Makanan
+      <span class="fw-bold">Pelayan</span> Untuk Memesan Makanan
     </p>
   </div>
 </template>

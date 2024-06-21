@@ -31,7 +31,7 @@ methods: {
     },
     async getProduct(){
         try {
-            const getProduct = await request.get(`product/list`);
+            const getProduct = await request.get(`product/list`, this.activeButton);
             const productList = getProduct.data.data;
 
             this.listProduct = productList;
@@ -48,7 +48,7 @@ methods: {
     const listCategory = ref<Array<any>>([]);
     const listProduct = ref<Array<any>>([]);
     const token = Cookies.get('token');
-    const activeButton = ref<string>('');
+    const activeButton = ref<string>('0');
     const cart = ref<Array<any>>([]);
 
     return {
@@ -74,8 +74,8 @@ methods: {
             <h2>Order & Enjoy</h2>
         </div>
         <div class="w-100 px-3 pb-5 d-flex gap-3" style="overflow-x: scroll;">
-            <div :class="activeButton == '' ? 'btn btn-warning' : 'btn btn-secondary'" @click="setButtonActive('')">All</div>
-            <div :class="activeButton == value.id ? 'btn btn-warning' : 'btn btn-secondary'" v-for="value of listCategory" :key="value.id" :value="value.id" @click="setButtonActive(value.id)">{{ value.name }}</div>
+            <div :class="activeButton == '0' ? 'btn btn-dark' : 'btn btn-secondary'" @click="setButtonActive('0')">All</div>
+            <div :class="activeButton == value.id ? 'btn btn-dark' : 'btn btn-secondary'" v-for="value of listCategory" :key="value.id" :value="value.id" @click="setButtonActive(value.id)">{{ value.name }}</div>
         </div>
         <div class="px-3 mt-5">
             <div class="row">
