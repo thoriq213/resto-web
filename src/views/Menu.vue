@@ -118,6 +118,8 @@ export default defineComponent({
                 if(sendApi.status == 200){
                     Cookies.remove('token');
                     router.push({name: 'form'});
+                    console.log('coba');
+                    
                 }
                    
             } catch (error : any) {
