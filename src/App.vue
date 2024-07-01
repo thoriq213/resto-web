@@ -1,85 +1,74 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
   <RouterView />
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
+<script lang="ts">
+import { defineComponent, nextTick, onBeforeMount, onMounted } from "vue";
+import { RouterView } from "vue-router";
+import { useConfigStore } from "@/stores/config";
+import { useThemeStore } from "@/stores/theme";
+import { useBodyStore } from "@/stores/body";
+import { themeConfigValue } from "@/core/helpers/config";
+import { initializeComponents } from "@/core/plugins/keenthemes";
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
+export default defineComponent({
+  name: "app",
+  components: {
+    RouterView,
+  },
+  setup() {
+    const configStore = useConfigStore();
+    const themeStore = useThemeStore();
+    const bodyStore = useBodyStore();
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
+    onBeforeMount(() => {
+      /**
+       * Overrides the layout config using saved data from localStorage
+       * remove this to use static config (@/core/config/DefaultLayoutConfig.ts)
+       */
+      configStore.overrideLayoutConfig();
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
+      /**
+       *  Sets a mode from configuration
+       */
+      themeStore.setThemeMode(themeConfigValue.value);
+    });
 
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
+    onMounted(() => {
+      nextTick(() => {
+        initializeComponents();
 
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
+        bodyStore.removeBodyClassName("page-loading");
+      });
+    });
+  },
+});
+</script>
 
-nav a:first-of-type {
-  border: 0;
-}
+<style lang="scss">
+@import "bootstrap-icons/font/bootstrap-icons.css";
+@import "apexcharts/dist/apexcharts.css";
+@import "quill/dist/quill.snow.css";
+@import "animate.css";
+@import "sweetalert2/dist/sweetalert2.css";
+@import "nouislider/dist/nouislider.css";
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+@import "socicon/css/socicon.css";
+@import "line-awesome/dist/line-awesome/css/line-awesome.css";
+@import "dropzone/dist/dropzone.css";
+@import "@vueform/multiselect/themes/default.css";
+@import "prism-themes/themes/prism-shades-of-purple.css";
+@import "element-plus/dist/index.css";
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+// Main demo style scss
+@import "assets/keenicons/duotone/style.css";
+@import "assets/keenicons/outline/style.css";
+@import "assets/keenicons/solid/style.css";
+@import "assets/sass/element-ui.dark";
+@import "assets/sass/plugins";
+@import "assets/sass/style";
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+#app {
+  display: contents;
 }
 </style>
