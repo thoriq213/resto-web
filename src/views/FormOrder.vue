@@ -16,6 +16,7 @@ export default defineComponent({
     const nameErrorApi = ref<string>('');
     const noHpErrorApi = ref<string>('');
     const router = useRouter();
+    const isLoading = ref<boolean>(false)
     
     const simpleSchema = {
       name(value: string) {
@@ -53,6 +54,7 @@ export default defineComponent({
 
     const submit = async () => {
       if (!tableError.value && !nameError.value && !noHpError.value) {
+        isLoading.value = true;
         const body = {
           name: name.value,
           phone: noHp.value,
@@ -68,13 +70,17 @@ export default defineComponent({
           const myPromise = new Promise((resolve, reject) => {
             try {
               Cookies.set('token', data.token, { expires: expires });
-              resolve('Operation was successful!');
+              setTimeout(() => {
+                router.push({name: 'menu'});
+                resolve("Data berhasil diambil");
+              }, 2000);
             } catch (error) {
+              isLoading.value = false;
               reject('Operation failed!'); 
             }
           });
-          router.push({name: 'menu'});
         } catch (error : any) {
+          isLoading.value = false;
           const res = error.response.data;
           if(typeof res.msg == 'object'){
             res.msg.forEach(element => {
@@ -112,7 +118,8 @@ export default defineComponent({
       numberOnly,
       tableErrorApi,
       nameErrorApi,
-      noHpErrorApi 
+      noHpErrorApi,
+      isLoading
     };
   },
 });
@@ -163,7 +170,10 @@ export default defineComponent({
         <span class="text-danger">{{ noHpErrorApi ? noHpErrorApi : noHpError }}</span>
       </div>
       <div class="form-group mt-15">
-        <div class="btn btn-light w-50" @click="submit">Submit</div>
+        <div v-if="isLoading" class="spinner-border text-light" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div v-else class="btn btn-light w-50" @click="submit">Submit</div>
       </div>
     </form>
   </div>
