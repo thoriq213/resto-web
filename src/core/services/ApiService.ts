@@ -57,6 +57,7 @@ class ApiService {
     resource: string,
     slug = "" as string
   ): Promise<AxiosResponse> {
+    ApiService.vueInstance.axios.defaults.headers.common["Authorization"] = Cookies.get('token');
     return ApiService.vueInstance.axios.get(`${resource}/${slug}`);
   }
 
@@ -67,6 +68,7 @@ class ApiService {
    * @returns Promise<AxiosResponse>
    */
   public static post(resource: string, params: any): Promise<AxiosResponse> {
+    ApiService.vueInstance.axios.defaults.headers.common["Authorization"] = Cookies.get('token');
     return ApiService.vueInstance.axios.post(`${resource}`, params);
   }
 
