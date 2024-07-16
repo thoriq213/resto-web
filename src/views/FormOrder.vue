@@ -66,20 +66,15 @@ export default defineComponent({
           const data = sendApi.data;
           const minutes = 15;
           const expires = minutes / 1440;
+          Cookies.set('token', data.token, { expires: expires });
+          setTimeout(() => {
+            router.push({name: 'menu'});
+          }, 2000);
+          console.log('ini kelar');
           
-          const myPromise = new Promise((resolve, reject) => {
-            try {
-              Cookies.set('token', data.token, { expires: expires });
-              setTimeout(() => {
-                router.push({name: 'menu'});
-                resolve("Data berhasil diambil");
-              }, 2000);
-            } catch (error) {
-              isLoading.value = false;
-              reject('Operation failed!'); 
-            }
-          });
         } catch (error : any) {
+          console.log(error);
+      
           isLoading.value = false;
           const res = error.response.data;
           if(typeof res.msg == 'object'){
